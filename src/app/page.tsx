@@ -7,43 +7,74 @@ import { about, members, services, site, works } from "@/content/site";
 
 function Hero() {
   return (
-    <section
-      id="top"
-      className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pt-16 pb-20 md:grid-cols-[3fr_2fr] md:pt-20 md:pb-24"
+    // 帯（HeroBanner）を見出しの背後に敷くため、画面幅いっぱいの枠で包む
+    <div className="relative overflow-hidden">
+      <HeroBanner />
+      <section
+        id="top"
+        className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pt-16 pb-20 md:grid-cols-[3fr_2fr] md:pt-20 md:pb-24"
+      >
+        <div>
+          <p className="hero-fade text-base font-medium tracking-[0.2em] text-accent uppercase">
+            Calm Technology
+          </p>
+          <h1 className="mt-6 text-[1.75rem] leading-tight font-bold tracking-tight sm:text-4xl md:text-6xl md:leading-[1.15]">
+            {site.taglineLines.map((line, i) => (
+              <span key={line} className="hero-line">
+                <span style={{ "--delay": `${200 + i * 140}ms` } as React.CSSProperties}>{line}</span>
+              </span>
+            ))}
+          </h1>
+          <p className="hero-fade mt-8 max-w-2xl leading-8 text-muted [--delay:700ms]">
+            <Text value={site.description} />
+          </p>
+        </div>
+        <div className="relative mx-auto hidden aspect-square w-full max-w-xs md:block">
+          {/* ロゴの背後でゆっくり回る光 */}
+          <div aria-hidden className="hero-orbit absolute -inset-10">
+            <span className="absolute top-2 left-4 size-40 rounded-full bg-[#f7931e]/30 blur-3xl" />
+            <span className="absolute right-2 bottom-4 size-44 rounded-full bg-[#1f6fd1]/30 blur-3xl" />
+          </div>
+          <div className="hero-logo relative flex h-full items-center">
+            <Image
+              src="/images/brand/logo.png"
+              alt={`${site.name} ロゴ`}
+              width={368}
+              height={343}
+              priority
+              className="w-full"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// 見出しの背後でゆっくり横に流れ続ける帯。
+// 絵の左右の端はつながっていないので、左右反転した絵と交互に並べて継ぎ目をなくしている。
+function HeroBanner() {
+  const tiles = [...Array(8).keys()];
+  return (
+    <div
+      aria-hidden
+      className="hero-banner pointer-events-none absolute inset-x-0 top-[var(--banner-top)] [--banner-top:6.5rem] sm:[--banner-top:7rem] md:[--banner-top:8.5rem]"
     >
-      <div>
-        <p className="hero-fade text-base font-medium tracking-[0.2em] text-accent uppercase [--delay:0ms]">
-          Calm Technology
-        </p>
-        <h1 className="mt-6 text-[1.75rem] leading-tight font-bold tracking-tight sm:text-4xl md:text-6xl md:leading-[1.15]">
-          {site.taglineLines.map((line, i) => (
-            <span key={line} className="hero-line">
-              <span style={{ "--delay": `${200 + i * 140}ms` } as React.CSSProperties}>{line}</span>
-            </span>
+      <div className="banner-reveal">
+        <div className="banner-track flex w-max">
+          {tiles.map((i) => (
+            <Image
+              key={i}
+              src="/images/illustrations/banner.png"
+              alt=""
+              width={1600}
+              height={306}
+              className={`h-20 w-auto max-w-none sm:h-28 md:h-36 ${i % 2 ? "-scale-x-100" : ""}`}
+            />
           ))}
-        </h1>
-        <p className="hero-fade mt-8 max-w-2xl leading-8 text-muted [--delay:700ms]">
-          <Text value={site.description} />
-        </p>
-      </div>
-      <div className="relative mx-auto hidden aspect-square w-full max-w-xs md:block">
-        {/* ロゴの背後でゆっくり回る光 */}
-        <div aria-hidden className="hero-orbit absolute -inset-10">
-          <span className="absolute top-2 left-4 size-40 rounded-full bg-[#f7931e]/30 blur-3xl" />
-          <span className="absolute right-2 bottom-4 size-44 rounded-full bg-[#1f6fd1]/30 blur-3xl" />
-        </div>
-        <div className="hero-logo relative flex h-full items-center">
-          <Image
-            src="/images/logo.png"
-            alt={`${site.name} ロゴ`}
-            width={368}
-            height={343}
-            priority
-            className="hero-float w-full"
-          />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -55,7 +86,7 @@ function About() {
           <SectionLabel index="01">About</SectionLabel>
           <Reveal zoom>
             <Image
-              src="/images/about.png"
+              src="/images/illustrations/about.png"
               alt="宇宙をただよう、穏やかな表情の人物のイラスト"
               width={631}
               height={1061}
@@ -98,7 +129,7 @@ function Services() {
           <SectionLabel index="02">Services</SectionLabel>
           <Reveal zoom>
             <Image
-              src="/images/services.png"
+              src="/images/illustrations/services.png"
               alt="ノートパソコンを手に、宇宙で向かい合って話す二人のイラスト"
               width={730}
               height={1064}
@@ -140,32 +171,14 @@ function Works() {
     <section id="works" className="border-t border-line">
       <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
         <SectionLabel index="03">Works</SectionLabel>
+        {/* スマホ：タイトル → 画像 → ベータ版の箱 の順。PC：左に画像、右にタイトルと箱 */}
         <ul className="mt-12 space-y-28 md:space-y-40">
           {works.map((w) => (
-            <li key={w.title} className="grid items-center gap-8 md:grid-cols-[1fr_1fr] md:gap-12">
-              {(() => {
-                const image = (
-                  <Image
-                    src={w.image}
-                    alt={`${w.title} の紹介画像`}
-                    width={1600}
-                    height={900}
-                    className="w-full rounded-2xl border border-line"
-                  />
-                );
-                return (
-                  <Reveal zoom>
-                    {w.detailPublished ? (
-                      <Link href={w.detail} className="block transition-opacity hover:opacity-85">
-                        {image}
-                      </Link>
-                    ) : (
-                      image
-                    )}
-                  </Reveal>
-                );
-              })()}
-              <Reveal delay={1}>
+            <li
+              key={w.title}
+              className="grid gap-8 md:grid-cols-2 md:grid-rows-[auto_auto] md:gap-x-12 md:gap-y-8"
+            >
+              <Reveal delay={1} className="md:col-start-2 md:row-start-1 md:self-end">
                 <p className="text-sm font-medium text-accent">{w.category}</p>
                 <h3 className="mt-2 text-4xl font-bold tracking-tight">{w.title}</h3>
                 <p className="mt-4 text-lg font-medium">{w.lead}</p>
@@ -184,32 +197,41 @@ function Works() {
                     {w.title}について詳しく見る →
                   </Link>
                 )}
-                {w.trial && (
-                  <div className="mt-8">
-                    <BetaCard product={w.title} trial={w.trial} />
-                  </div>
-                )}
               </Reveal>
+              <Reveal zoom className="md:col-start-1 md:row-span-2 md:row-start-1 md:self-center">
+                <Image
+                  src={w.image}
+                  alt={`${w.title} の紹介画像`}
+                  width={1600}
+                  height={900}
+                  className="w-full rounded-2xl border border-line"
+                />
+              </Reveal>
+              {w.trial && (
+                <Reveal delay={1} className="md:col-start-2 md:row-start-2 md:self-start">
+                  <BetaCard product={w.title} trial={w.trial} />
+                </Reveal>
+              )}
             </li>
           ))}
 
           {/* 次のプロダクト用の枠 */}
-          <li className="grid items-center gap-8 md:grid-cols-[1fr_1fr] md:gap-12">
-            <Reveal
-              zoom
-              className="flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed border-line bg-[#f9fafb]"
-            >
-              <p className="text-2xl font-semibold tracking-[0.3em] text-muted/60 uppercase md:text-3xl">
-                Coming soon
-              </p>
-            </Reveal>
-            <Reveal delay={1}>
+          <li className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
+            <Reveal delay={1} className="md:col-start-2 md:row-start-1">
               <p className="text-sm font-medium text-accent">Next Product</p>
               <h3 className="mt-2 text-4xl font-bold tracking-tight text-muted/70">開発中・・・</h3>
               <p className="mt-4 leading-8 text-muted">
                 次のプロダクトを準備しています。
                 <br />
                 公開まで、もう少しお待ちください。
+              </p>
+            </Reveal>
+            <Reveal
+              zoom
+              className="flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed border-line bg-[#f9fafb] md:col-start-1 md:row-start-1"
+            >
+              <p className="text-2xl font-semibold tracking-[0.3em] text-muted/60 uppercase md:text-3xl">
+                Coming soon
               </p>
             </Reveal>
           </li>

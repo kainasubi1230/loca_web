@@ -1,11 +1,9 @@
 // サイトに表示するテキストはすべてここで管理しています。
-
 // 文中の「\n」はPCで改行する位置です（スマホでは自動で折り返します）。
 
 export const site = {
   name: "Aplicalm",
-  tagline: "技術で、心地よい平穏を届ける。",
-  // トップの見出しの行の分け方（1行ずつ下から現れるアニメーション）
+  // トップの見出し。1行ずつ下から現れるので、行ごとに分けて書く
   taglineLines: ["技術で、心地よい平穏を", "届ける。"],
   description:
     "Aplicalmは「技術で心地よい平穏（Calm）を届ける」をモットーに、\n日常にそっと寄り添うアプリケーションをつくるチームです。",
@@ -22,7 +20,6 @@ export const nav = [
   { label: "Services", href: "/#services" },
   { label: "Works", href: "/#works" },
   { label: "Members", href: "/#members" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 export const about = {
@@ -58,13 +55,13 @@ export const services = [
 ];
 
 export const works = [
-  // プロダクトが増えたらここに追加してください（image は public/ 以下のパス）
+  // プロダクトが増えたらここに追加（画像は public/images/works/<作品名>/ に置く）
   {
     title: "Loca",
     category: "オリジナルプロダクト",
     lead: "現実空間に言葉を残す、空間メディア。",
     tags: ["ARアプリ", "新感覚メディア", "世界を広げよう"],
-    image: "/images/loca-cover.jpg",
+    image: "/images/works/loca/cover.jpg",
     detail: "/works/loca",
     // 紹介ページ（/works/loca）を公開したら true に。false の間はリンクを隠し、本番ではページも404になります
     detailPublished: false,
@@ -72,7 +69,7 @@ export const works = [
     trial: {
       label: "TestFlightでベータ版を試す",
       href: "https://testflight.apple.com/join/P1YGx4jt",
-      qr: "/images/loca-qr.jpg",
+      qr: "/images/works/loca/qr.png",
     },
   },
 ];

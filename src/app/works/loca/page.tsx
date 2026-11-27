@@ -44,7 +44,7 @@ export default function LocaPage() {
             </ul>
           </div>
           <Image
-            src="/images/loca-cover.jpg"
+            src="/images/works/loca/cover.jpg"
             alt="Locaの紹介画像"
             width={1600}
             height={900}
@@ -87,7 +87,7 @@ export default function LocaPage() {
           <SectionLabel index="02">How it works</SectionLabel>
           <div>
             <Image
-              src="/images/loca-intro.jpg"
+              src="/images/works/loca/intro.jpg"
               alt="空間に置かれた言葉のカードがスマホの画面に映っている様子"
               width={1600}
               height={900}

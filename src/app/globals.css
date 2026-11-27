@@ -59,12 +59,9 @@ section[id] {
   animation-delay: var(--delay, 0ms);
 }
 
-/* ロゴ：回転しながらぼかしが取れて現れ、そのあと浮遊 */
+/* ロゴ：回転しながらぼかしが取れて現れる */
 .hero-logo {
   animation: hero-logo-in 1.6s var(--ease-out-expo) 300ms both;
-}
-.hero-float {
-  animation: hero-float 6s ease-in-out 1.9s infinite;
 }
 .hero-orbit {
   animation:
@@ -72,56 +69,61 @@ section[id] {
     hero-orbit 24s linear infinite;
 }
 
+/* キーフレームは開始の状態だけ書き、終わりは要素本来の見た目に戻す */
 @keyframes hero-rise {
   from {
-    transform: translateY(105%);
-  }
-  to {
-    transform: translateY(0);
+    translate: 0 105%;
   }
 }
 @keyframes hero-fade-up {
   from {
     opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    translate: 0 16px;
   }
 }
 @keyframes hero-fade-in {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
 @keyframes hero-logo-in {
   from {
     opacity: 0;
-    transform: rotate(-90deg) scale(0.7);
+    rotate: -90deg;
+    scale: 0.7;
     filter: blur(16px);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(0) scale(1);
-    filter: blur(0);
-  }
-}
-@keyframes hero-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
   }
 }
 @keyframes hero-orbit {
   to {
     rotate: 360deg;
+  }
+}
+
+/* 見出しの背後の帯：半透明で、両端はふわっと消し、右から左へゆっくり流れ続ける */
+.hero-banner {
+  opacity: 0.12;
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+/* 出現：流れの先頭が右端から入ってきて、左へ描かれるように伸びていく */
+.banner-reveal {
+  animation: banner-flow-in 2.6s var(--ease-out-expo) 700ms both;
+}
+.banner-track {
+  animation: banner-scroll 80s linear infinite;
+}
+@keyframes banner-flow-in {
+  from {
+    clip-path: inset(0 0 0 100%);
+    translate: 25% 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes banner-scroll {
+  to {
+    translate: -50% 0;
   }
 }
 
@@ -151,8 +153,9 @@ section[id] {
   .hero-line > span,
   .hero-fade,
   .hero-logo,
-  .hero-float,
-  .hero-orbit {
+  .hero-orbit,
+  .banner-reveal,
+  .banner-track {
     animation: none;
   }
 }

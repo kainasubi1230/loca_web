@@ -7,12 +7,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-line/70 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
-          <Image src="/images/logo.png" alt="" width={37} height={35} priority />
+          <Image src="/images/brand/logo.png" alt="" width={37} height={35} priority />
           {site.name}
         </Link>
         <nav className="flex items-center gap-8 text-sm">
           <ul className="hidden items-center gap-8 md:flex">
-            {nav.slice(0, -1).map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="text-muted transition-colors hover:text-foreground">
                   {item.label}
@@ -31,7 +31,7 @@ export function SiteHeader() {
       {/* スマホ用：ヘッダーの下にリンクを1行で並べる */}
       <nav className="border-t border-line/70 md:hidden">
         <ul className="mx-auto flex max-w-6xl gap-6 overflow-x-auto px-6 py-2.5 text-sm whitespace-nowrap">
-          {nav.slice(0, -1).map((item) => (
+          {nav.map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="text-muted transition-colors hover:text-foreground">
                 {item.label}
