@@ -28,6 +28,18 @@ export function SiteHeader() {
           </Link>
         </nav>
       </div>
+      {/* スマホ用：ヘッダーの下にリンクを1行で並べる */}
+      <nav className="border-t border-line/70 md:hidden">
+        <ul className="mx-auto flex max-w-6xl gap-6 overflow-x-auto px-6 py-2.5 text-sm whitespace-nowrap">
+          {nav.slice(0, -1).map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className="text-muted transition-colors hover:text-foreground">
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

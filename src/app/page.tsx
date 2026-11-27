@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BetaCard } from "@/components/beta-card";
+import { Reveal } from "@/components/reveal";
 import { SectionLabel, Text } from "@/components/text";
 import { about, members, services, site, works } from "@/content/site";
 
@@ -14,7 +15,7 @@ function Hero() {
         <p className="hero-fade text-base font-medium tracking-[0.2em] text-accent uppercase [--delay:0ms]">
           Calm Technology
         </p>
-        <h1 className="mt-6 text-4xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.15]">
+        <h1 className="mt-6 text-[1.75rem] leading-tight font-bold tracking-tight sm:text-4xl md:text-6xl md:leading-[1.15]">
           {site.taglineLines.map((line, i) => (
             <span key={line} className="hero-line">
               <span style={{ "--delay": `${200 + i * 140}ms` } as React.CSSProperties}>{line}</span>
@@ -52,18 +53,20 @@ function About() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-[1fr_2fr] md:py-32">
         <div className="flex flex-col gap-10">
           <SectionLabel index="01">About</SectionLabel>
-          <Image
-            src="/images/about.png"
-            alt="宇宙をただよう、穏やかな表情の人物のイラスト"
-            width={631}
-            height={1061}
-            className="mx-auto w-2/3 max-w-56 md:mx-0 md:mt-12 md:w-full md:max-w-64"
-          />
+          <Reveal zoom>
+            <Image
+              src="/images/about.png"
+              alt="宇宙をただよう、穏やかな表情の人物のイラスト"
+              width={631}
+              height={1061}
+              className="mx-auto w-2/3 max-w-56 md:mx-0 md:mt-12 md:w-full md:max-w-64"
+            />
+          </Reveal>
         </div>
         <div className="md:pt-14">
-          <h2 className="text-2xl leading-snug font-bold tracking-tight md:text-4xl">
+          <Reveal as="h2" className="text-2xl leading-snug font-bold tracking-tight md:text-4xl">
             {about.heading}
-          </h2>
+          </Reveal>
           <div className="mt-8 space-y-5 leading-8 text-muted">
             {about.body.map((p, i) => (
               <p key={i}>
@@ -93,21 +96,24 @@ function Services() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-[1fr_2fr] md:py-32">
         <div className="flex flex-col gap-10">
           <SectionLabel index="02">Services</SectionLabel>
-          <Image
-            src="/images/services.png"
-            alt="ノートパソコンを手に、宇宙で向かい合って話す二人のイラスト"
-            width={730}
-            height={1064}
-            className="mx-auto w-2/3 max-w-56 md:mx-0 md:mt-12 md:w-full md:max-w-64"
-          />
+          <Reveal zoom>
+            <Image
+              src="/images/services.png"
+              alt="ノートパソコンを手に、宇宙で向かい合って話す二人のイラスト"
+              width={730}
+              height={1064}
+              className="mx-auto w-2/3 max-w-56 md:mx-0 md:mt-12 md:w-full md:max-w-64"
+            />
+          </Reveal>
         </div>
         <ul className="h-fit divide-y divide-line self-center border-y border-line">
           {services.map((s) => (
             <li
               key={s.title}
-              className={`grid gap-3 py-8 sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-8 ${"status" in s ? "opacity-60" : ""}`}
+              className="grid gap-3 py-8 sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-8"
             >
-              <div>
+              {/* 準備中の項目は薄く表示 */}
+              <div className={"status" in s ? "opacity-60" : ""}>
                 <p className="text-sm font-medium tracking-[0.2em] text-accent uppercase">{s.en}</p>
                 <h3 className="mt-1 flex flex-wrap items-center gap-2 text-xl font-semibold">
                   {s.title}
@@ -118,7 +124,7 @@ function Services() {
                   )}
                 </h3>
               </div>
-              <p className="leading-8 text-muted">
+              <p className={`leading-8 text-muted ${"status" in s ? "opacity-60" : ""}`}>
                 <Text value={s.text} />
               </p>
             </li>
@@ -147,15 +153,19 @@ function Works() {
                     className="w-full rounded-2xl border border-line"
                   />
                 );
-                return w.detailPublished ? (
-                  <Link href={w.detail} className="block transition-opacity hover:opacity-85">
-                    {image}
-                  </Link>
-                ) : (
-                  image
+                return (
+                  <Reveal zoom>
+                    {w.detailPublished ? (
+                      <Link href={w.detail} className="block transition-opacity hover:opacity-85">
+                        {image}
+                      </Link>
+                    ) : (
+                      image
+                    )}
+                  </Reveal>
                 );
               })()}
-              <div>
+              <Reveal delay={1}>
                 <p className="text-sm font-medium text-accent">{w.category}</p>
                 <h3 className="mt-2 text-4xl font-bold tracking-tight">{w.title}</h3>
                 <p className="mt-4 text-lg font-medium">{w.lead}</p>
@@ -179,18 +189,21 @@ function Works() {
                     <BetaCard product={w.title} trial={w.trial} />
                   </div>
                 )}
-              </div>
+              </Reveal>
             </li>
           ))}
 
           {/* 次のプロダクト用の枠 */}
           <li className="grid items-center gap-8 md:grid-cols-[1fr_1fr] md:gap-12">
-            <div className="flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed border-line bg-[#f9fafb]">
+            <Reveal
+              zoom
+              className="flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed border-line bg-[#f9fafb]"
+            >
               <p className="text-2xl font-semibold tracking-[0.3em] text-muted/60 uppercase md:text-3xl">
                 Coming soon
               </p>
-            </div>
-            <div>
+            </Reveal>
+            <Reveal delay={1}>
               <p className="text-sm font-medium text-accent">Next Product</p>
               <h3 className="mt-2 text-4xl font-bold tracking-tight text-muted/70">開発中・・・</h3>
               <p className="mt-4 leading-8 text-muted">
@@ -198,7 +211,7 @@ function Works() {
                 <br />
                 公開まで、もう少しお待ちください。
               </p>
-            </div>
+            </Reveal>
           </li>
         </ul>
       </div>
@@ -212,8 +225,8 @@ function Members() {
       <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
         <SectionLabel index="04">Members</SectionLabel>
         <ul className="mt-12 grid grid-cols-2 gap-6 md:gap-12">
-          {members.map((m) => (
-            <li key={m.name} className="flex flex-col items-center text-center">
+          {members.map((m, i) => (
+            <Reveal as="li" key={m.name} delay={i} className="flex flex-col items-center text-center">
               <Image
                 src={m.image}
                 alt={`${m.name} のプロフィール写真`}
@@ -253,7 +266,7 @@ function Members() {
                   <dd className="mt-1 leading-8 md:text-lg">{m.interests}</dd>
                 </div>
               </dl>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>
